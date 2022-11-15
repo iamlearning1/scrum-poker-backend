@@ -5,6 +5,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { User } from './user/user.entity';
+import { IsEmailUniqueConstraint } from './decorators/unique-email.decorator';
 
 @Module({
   imports: [
@@ -20,6 +21,8 @@ import { User } from './user/user.entity';
       sortSchema: true,
     }),
     UserModule,
+    TypeOrmModule.forFeature([User]),
   ],
+  providers: [IsEmailUniqueConstraint],
 })
 export class AppModule {}

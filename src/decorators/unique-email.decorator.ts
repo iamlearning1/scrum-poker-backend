@@ -5,40 +5,32 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from '../user/user.entity';
 
+@Injectable()
 @ValidatorConstraint({ async: true })
-export class IsUserAlreadyExistConstraint
-  implements ValidatorConstraintInterface
-{
+export class IsEmailUniqueConstraint implements ValidatorConstraintInterface {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
   async validate(email: string): Promise<boolean> {
-    console.log(
-      '🚀 ~ file: user-exists.decorator.ts ~ line 20 ~ validate ~ email',
-      email,
-    );
     const user = await this.userRepository.findOne({ where: { email } });
-    console.log(
-      '🚀 ~ file: user-exists.decorator.ts ~ line 25 ~ validate ~ user',
-      user,
-    );
 
     return !user;
   }
 }
 
-export function IsUserAlreadyExist(validationOptions?: ValidationOptions) {
+export function IsEmailUnique(validationOptions?: ValidationOptions) {
   return function (object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
       constraints: [],
-      validator: IsUserAlreadyExistConstraint,
+      validator: IsEmailUniqueConstraint,
     });
   };
 }

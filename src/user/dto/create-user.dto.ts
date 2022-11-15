@@ -1,11 +1,11 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsEmail, IsString } from 'class-validator';
-import { IsUserAlreadyExist } from '../../decorators/user-exists.decorator';
+import { IsEmailUnique } from '../../decorators/unique-email.decorator';
 
 @InputType()
 export class CreateUserDto {
   @Field()
-  //   @IsUserAlreadyExist({ message: 'User already exists' })
+  @IsEmailUnique({ message: 'User already exists' })
   @IsEmail()
   email: string;
 
