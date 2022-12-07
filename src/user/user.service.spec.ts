@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { validate, v4 as uuidv4 } from 'uuid';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
@@ -9,7 +8,6 @@ const mockUser = {
   email: 'test@test.com',
   firstName: 'new',
   lastName: 'user',
-  room: uuidv4() as string,
 };
 
 describe('UserService', () => {
@@ -43,11 +41,5 @@ describe('UserService', () => {
     expect(user).toBeDefined();
     expect(user.id).toBe(mockUser.id);
     expect(user.email).toBe(mockUser.email);
-  });
-
-  it('should create a random room id that has a unique id', () => {
-    const id = service.createRoom();
-
-    expect(validate(id)).toBe(true);
   });
 });

@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { v4 as uuidv4 } from 'uuid';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 
@@ -8,7 +7,6 @@ const mockUser = {
   email: 'test2@test.com',
   firstName: 'new',
   lastName: 'user',
-  room: uuidv4() as string,
 };
 
 describe('UserResolver', () => {

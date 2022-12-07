@@ -1,18 +1,20 @@
 import { join } from 'path';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from './user/user.module';
-import { User } from './user/user.entity';
 import { IsEmailUniqueConstraint } from './decorators/unique-email.decorator';
+import { UserModule } from './user/user.module';
+import { PeopleModule } from './people/people.module';
+import { User } from './user/user.entity';
+import { People } from './people/people.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'poker.sqlite',
-      entities: [User],
+      entities: [User, People],
       synchronize: true,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -22,6 +24,7 @@ import { IsEmailUniqueConstraint } from './decorators/unique-email.decorator';
     }),
     UserModule,
     TypeOrmModule.forFeature([User]),
+    PeopleModule,
   ],
   providers: [IsEmailUniqueConstraint],
 })
