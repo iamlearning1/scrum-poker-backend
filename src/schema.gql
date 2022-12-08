@@ -8,25 +8,43 @@ input CreateUserDto {
   lastName: String!
 }
 
-input JoinDto {
+input JoinRoomDto {
   joinee: String!
+  owner: String!
+}
+
+input LeaveRoomDto {
+  id: String!
   owner: String!
 }
 
 type Mutation {
   createUser(data: CreateUserDto!): User!
-  joinRoom(data: JoinDto!): [People!]!
-}
-
-type People {
-  id: String!
-  joinee: User!
-  points: Float!
+  joinRoom(data: JoinRoomDto!): Room!
+  leaveRoom(data: LeaveRoomDto!): [Room!]!
+  resetAll(owner: String!): [Room!]!
+  updatePoints(data: UpdatePointsDto!): [Room!]!
 }
 
 type Query {
   hello: String!
-  peopleByRoom(owner: String!): [People!]!
+}
+
+type Room {
+  id: String!
+  joinee: User!
+  owner: User!
+  points: Float!
+}
+
+type Subscription {
+  joinedRoom(owner: String!): [Room!]!
+}
+
+input UpdatePointsDto {
+  id: String!
+  owner: String!
+  points: Float!
 }
 
 type User {

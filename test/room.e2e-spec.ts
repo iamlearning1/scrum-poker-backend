@@ -3,23 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 
-const createUser = `
-mutation {
-  createUser(
-    data: {
-      email: "newuser1@test.com"
-      firstName: "new"
-      lastName: "user1"
-    }
-  ) {
-    id
-    email
-    firstName
-  }
-}
-`;
-
-describe('User (e2e)', () => {
+describe('Room (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -31,15 +15,29 @@ describe('User (e2e)', () => {
     await app.init();
   });
 
-  it('should create the user', () => {
+  it('should add a user to an existing room', () => {
     return request(app.getHttpServer())
       .post('/graphql')
       .send({
-        query: createUser,
+        query: `
+          mutation {
+            createUser(
+              data: {
+                email: "newuser2@test.com"
+                firstName: "new"
+                lastName: "user2"
+              }
+            ) {
+              id
+              email
+              firstName
+            }
+          }
+        `,
       })
       .expect(200)
       .expect((res) => {
-        expect(res.body.data.createUser.email).toBe('newuser1@test.com');
+        expect(res.body.data.createUser.email).toBe('newuser2@test.com');
       });
   });
 });

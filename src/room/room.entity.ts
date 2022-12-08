@@ -11,12 +11,13 @@ import { User } from '../user/user.entity';
 @ObjectType()
 @Entity()
 @Index(['owner', 'joinee'], { unique: true })
-export class People {
+export class Room {
   @Field()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, (user) => user.id)
+  @Field()
+  @ManyToOne(() => User, (user) => user.id, { eager: true })
   owner: User;
 
   @Field()

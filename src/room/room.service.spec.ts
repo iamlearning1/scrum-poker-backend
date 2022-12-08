@@ -1,16 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { People } from './people.entity';
-import { PeopleService } from './people.service';
+import { Room } from './room.entity';
+import { RoomService } from './room.service';
 
 const mockJoin = {
-  id: 'random-id',
   owner: 'user1',
-  joiner: 'user2',
+  joinee: 'user2',
 };
 
-describe('PeopleService', () => {
-  let service: PeopleService;
+describe('RoomService', () => {
+  let service: RoomService;
   const mockPeopleRepository = {
     create: () => mockJoin,
     save: () => null,
@@ -19,15 +18,15 @@ describe('PeopleService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        PeopleService,
+        RoomService,
         {
-          provide: getRepositoryToken(People),
+          provide: getRepositoryToken(Room),
           useValue: mockPeopleRepository,
         },
       ],
     }).compile();
 
-    service = module.get<PeopleService>(PeopleService);
+    service = module.get<RoomService>(RoomService);
   });
 
   it('should be defined', () => {
@@ -38,8 +37,8 @@ describe('PeopleService', () => {
     const joined = await service.create(mockJoin);
 
     expect(joined).toBeDefined();
-    expect(joined.id).toBe(mockJoin.id);
+    expect(joined.id).toBeDefined();
     expect(joined.owner).toBe(mockJoin.owner);
-    expect(joined.joiner).toBe(mockJoin.joiner);
+    expect(joined.joinee).toBe(mockJoin.joinee);
   });
 });

@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { IsUUID } from 'class-validator';
 
 @InputType()
-export class JoinDto {
+export class JoinRoomDto {
   @Field()
   @IsUUID()
   joinee: string;

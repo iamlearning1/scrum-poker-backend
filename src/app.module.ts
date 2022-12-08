@@ -6,9 +6,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { IsEmailUniqueConstraint } from './decorators/unique-email.decorator';
 import { UserModule } from './user/user.module';
-import { PeopleModule } from './people/people.module';
+import { RoomModule } from './room/room.module';
 import { User } from './user/user.entity';
-import { People } from './people/people.entity';
+import { Room } from './room/room.entity';
 
 @Module({
   imports: [
@@ -17,19 +17,22 @@ import { People } from './people/people.entity';
       useFactory: (configService: ConfigService) => ({
         type: 'sqlite',
         database: `${configService.get('NODE_ENV')}.sqlite`,
-        entities: [User, People],
+        entities: [User, Room],
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      subscriptions: {
+        'subscriptions-transport-ws': true,
+      },
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
     }),
     UserModule,
     TypeOrmModule.forFeature([User]),
-    PeopleModule,
+    RoomModule,
   ],
   providers: [IsEmailUniqueConstraint],
 })
