@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { User } from 'src/user/user.entity';
+import { User } from '../user/user.entity';
 
 @ObjectType()
 @Entity()
@@ -16,12 +16,11 @@ export class People {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Field()
   @ManyToOne(() => User, (user) => user.id)
   owner: User;
 
   @Field()
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.id, { eager: true })
   joinee: User;
 
   @Field()

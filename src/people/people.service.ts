@@ -32,10 +32,10 @@ export class PeopleService {
     return this.peopleRepository.find({
       // @ts-ignore
       owner,
-      relations: {
-        joinee: true,
-        owner: true,
-      },
+      // relations: {
+      //   joinee: true,
+      //   owner: true,
+      // },
     });
   }
 }

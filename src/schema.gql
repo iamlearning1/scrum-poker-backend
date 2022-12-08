@@ -21,7 +21,6 @@ type Mutation {
 type People {
   id: String!
   joinee: User!
-  owner: User!
   points: Float!
 }
 
